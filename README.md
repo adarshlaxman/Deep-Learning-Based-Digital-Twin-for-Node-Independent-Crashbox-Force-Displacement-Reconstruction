@@ -104,38 +104,7 @@ Output: RF3
 
 ---
 
-## 📁 Repository Structure
-
-```
-
-Crashbox_DL_Digital_Twin/
-│
-├── 01_data_preprocessing.ipynb      # Dataset cleaning, scaling, and splitting
-├── 02_mlp_training.ipynb            # MLP training and evaluation
-│
-├── crashboxsimulationfiles/         # Abaqus simulation files
-│   ├── crashboxtest.cae
-│   ├── Jobcrashboxtesr.inp
-│   └── Jobcrashboxtesr.odb
-│
-├── data/
-│   ├── raw/
-│   │   └── crashbox_spatial_temporal_data_FIXED.csv
-│   └── processed/
-│       ├── X_train.csv
-│       ├── X_test.csv
-│       ├── y_train.csv
-│       ├── y_test.csv
-│       ├── scaler_X.pkl
-│       └── scaler_y.pkl
-│
-├── models/
-│   └── crashbox_mlp.pt              # Trained digital twin model
-│
-├── odbdataextractioncode/
-│   └── crashbox_data.py             # Abaqus ODB extraction script
-
-```
+ 
 
 ---
 
@@ -206,4 +175,5 @@ Please cite appropriately if used in publications.
 
  
  
+
 
