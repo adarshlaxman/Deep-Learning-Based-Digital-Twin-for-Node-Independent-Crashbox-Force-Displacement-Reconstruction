@@ -151,8 +151,6 @@ This result indicates that:
 ---
 
 ## 7. Future Work
-
-* Integration of **Graph Neural Networks (GNNs)** for mesh-aware learning
 * Incorporation of **attention mechanisms** for adaptive feature weighting
 * Extension to full vehicle crash simulations
 * Deployment in real-time monitoring environments
