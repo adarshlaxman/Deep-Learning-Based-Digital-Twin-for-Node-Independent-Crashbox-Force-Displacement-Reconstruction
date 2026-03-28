@@ -1,179 +1,174 @@
-﻿# Deep-Learning-Based-Digital-Twin-for-Node-Independent-Crashbox-Force-Displacement-Reconstruction
+# 🚀 Deep Learning Digital Twin for Crashbox Force Prediction & Optimal Sensor Placement
 
+## 👨‍💻 Author
 
-```
-Crashbox_DL_Digital_Twin/
-│
-├── 01_data_preprocessing.ipynb
-├── 02_mlp_training.ipynb
-│
-├── crashboxsimulationfiles/
-│   ├── crashboxtest.cae
-│   ├── Jobcrashboxtesr.inp
-│   └── Jobcrashboxtesr.odb
-│
-├── data/
-│   ├── raw/
-│   │   └── crashbox_spatial_temporal_data_FIXED.csv
-│   └── processed/
-│       ├── X_train.csv
-│       ├── X_test.csv
-│       ├── y_train.csv
-│       ├── y_test.csv
-│       ├── scaler_X.pkl
-│       └── scaler_y.pkl
-│
-├── models/
-│   └── crashbox_mlp.pt
-│
-├── odbdataextractioncode/
-│   └── crashbox_data.py
-```
-
----
-
-
----
-
-```markdown
-# Deep Learning–Based Digital Twin for Node-Independent Crashbox Force–Displacement Reconstruction
-
-This repository contains a **physics-consistent deep learning digital twin** developed to
-reconstruct the **global force–displacement response of a crashbox** from **local nodal
-deformation data**, while remaining **independent of nodal identity**.
-
-The project integrates **Abaqus/Explicit finite element simulation** with **machine learning**
-to enable **accurate, stable, and generalizable crash response prediction**.
-
----
-
-## 🔍 Project Overview
-
-Finite element crash simulations accurately capture nonlinear deformation and energy absorption,
-but they are computationally expensive and produce **node-dependent scattered outputs**.
-
-This project addresses these limitations by building a **node-independent digital twin** that:
-
-- Learns the **global crashbox force–displacement law**
-- Generalizes to **unseen nodes**
-- Preserves physical behavior
-- Enables **real-time inference**
-
----
-
-## 🧠 Key Contributions
-
-- Physics-aware data extraction from Abaqus ODB
-- Spatial–temporal dataset construction
-- Node-based train/test split (no data leakage)
-- Deep learning regression model (MLP)
-- Generalization to completely unseen nodes
-- Learned spatial sensitivity envelope
-- Physics-consistent force–displacement reconstruction
-
----
-
-## 🧩 Methodology Pipeline
-
-1. **Crashbox Simulation (Abaqus/Explicit)**
-   - Thin-walled crashbox under axial crushing
-   - Large plastic deformation and contact
-   - Global reaction force measured at reference point
-
-2. **ODB Data Extraction**
-   - Global reaction force RF3
-   - Local axial displacement U3 from multiple nodes
-   - Spatial coordinates (X, Y, Z) and time
-   - Extracted using Abaqus Python API
-
-3. **Spatial–Temporal Dataset**
-```
-
-Input : [Time, X, Y, Z, U3]
-Output: RF3
-
-```
-
-4. **Node-Based Learning Strategy**
-- Entire nodes held out during testing
-- Forces true spatial generalization
-
-5. **Deep Learning Digital Twin**
-- Multi-Layer Perceptron (MLP)
-- Learns mapping from local deformation to global force
-
----
-
+**Adarsh L**
  
 
 ---
 
-## 📊 Key Results
+## 📌 Project Overview
 
-- **Generalization to unseen nodes**
-  - R² ≈ **0.80**
-  - RMSE ≈ **0.44**
+This project presents a **Deep Learning-based Digital Twin** for predicting crash force in a thin-walled crashbox structure using simulation data.
 
-- **Physics preservation**
-  - Digital twin overlaps Abaqus mean force–displacement response
+Traditional crash simulations using Finite Element Analysis (FEA) are computationally expensive and time-consuming. This project replaces those simulations with a **fast and accurate neural network model**.
 
-- **Spatial sensitivity**
-  - Learned σ-envelope highlights nonlinear crushing regions
-
-- **Efficiency**
-  - Inference in milliseconds vs minutes for FEA
+Additionally, it introduces a novel approach to **optimal sensor placement**, reducing hardware requirements while maintaining high prediction accuracy.
 
 ---
 
-## 🛠 Tools & Technologies
+## 🎯 Problem Statement
 
-- Abaqus/Explicit — Finite element simulation
-- Python — Data extraction and processing
-- PyTorch — Deep learning model
-- NumPy, Pandas, Matplotlib — Analysis & visualization
+Crash simulations:
 
----
+* ⏳ Take hours to compute
+* 💻 Require high computational resources
+* ❌ Not suitable for real-time applications
 
-## 🚀 How to Run the Project
+### ✅ Objective:
 
-1. Run the Abaqus simulation (`.cae / .inp`)
-2. Extract spatial–temporal data using:
-```
-
-odbdataextractioncode/crashbox_data.py
-
-```
-3. Preprocess the dataset:
-```
-
-01_data_preprocessing.ipynb
-
-```
-4. Train and evaluate the digital twin:
-```
-
-02_mlp_training.ipynb
-
-```
+* Develop a **surrogate model** to predict crash force instantly
+* Identify **minimum number of sensors** needed for accurate monitoring
 
 ---
 
-## 📌 Future Scope
+## ⚙️ Methodology
 
-- Multi-velocity crash scenarios
-- Different crashbox geometries
-- Temporal models (LSTM, physics-informed networks)
-- Uncertainty quantification
-- Experimental data integration
+### 📊 Data Source
+
+* Simulation data generated using Abaqus Explicit
+* Dataset includes:
+
+  * Time step
+  * Node coordinates (X, Y, Z)
+  * Displacement (U3)
+  * Output: Global reaction force (RF3)
 
 ---
 
-## 📜 License
+### 🧠 Model Architecture
 
-This project is intended for **academic and research use**.
-Please cite appropriately if used in publications.
+A Multi-Layer Perceptron (MLP):
 
- 
- 
+```
+Input (5 features)
+   ↓
+Dense (128) → ReLU
+   ↓
+Dense (64) → ReLU
+   ↓
+Dense (32) → ReLU
+   ↓
+Output (1: RF3)
+```
 
+---
 
+### 🧪 Validation Strategy
+
+* **Spatial Train-Test Split**
+
+  * Model tested on nodes never seen during training
+  * Ensures real generalisation (not memorisation)
+
+---
+
+### 📍 Sensor Placement Strategy
+
+* Used gradient-based sensitivity:
+
+  |∂RF3 / ∂U3|
+
+* Ranked nodes based on influence on force prediction
+
+* Identified optimal sensor locations
+
+---
+
+## 📊 Results
+
+### ✅ Model Performance
+
+* **R² Score:** 0.949
+* **RMSE:** 0.225
+* **Relative Error:** ~4.34%
+
+👉 Model accurately reproduces crash force behavior
+
+---
+
+### 💥 Key Finding (Major Contribution)
+
+* **Single optimal sensor → R² = 0.997**
+* Outperforms using all nodes together
+
+👉 This proves:
+
+* Minimal sensors can achieve maximum accuracy
+* Huge reduction in cost and complexity
+
+---
+
+## 🧪 Sensor Reduction Study
+
+| Number of Sensors | Accuracy (R²) |
+| ----------------- | ------------- |
+| 1                 | 0.997 🔥      |
+| 1–5               | ~0.75–0.80    |
+| All nodes         | ~0.95         |
+
+---
+
+## 🌟 Key Contributions
+
+* ✅ Deep learning surrogate for crash simulation
+* ✅ True spatial generalisation
+* ✅ Gradient-based sensor importance ranking
+* ✅ Ultra-sparse sensing (1 sensor outperforming full data)
+* ✅ Real-world applicable digital twin
+
+---
+
+## 🚗 Applications
+
+* Automotive crash analysis
+* Structural health monitoring
+* Real-time digital twin systems
+* Cost-efficient sensor deployment
+
+---
+
+## 📂 Project Structure
+
+```
+├── 02_mlp_training.ipynb   # Main training notebook
+├── data/                   # Simulation dataset
+├── results/                # Graphs & outputs
+├── models/                 # Saved model
+└── README.md               # Project documentation
+```
+
+---
+
+## 🚀 Future Work
+
+* Graph Neural Networks (mesh-aware learning)
+* Attention mechanisms for spatial importance
+* Full vehicle crash modeling
+* Real-time deployment systems
+
+---
+
+## 🧠 Summary
+
+This project demonstrates that:
+
+> Deep learning can replace expensive crash simulations and identify optimal sensor locations, enabling accurate and efficient monitoring with minimal resources.
+
+---
+
+## ⭐ If you like this project
+
+Give it a ⭐ on GitHub and feel free to contribute!
+
+---
